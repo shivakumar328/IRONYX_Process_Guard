@@ -1,0 +1,19 @@
+{
+  "paths": [
+    "/tmp",
+    "/dev/shm",
+    "/var/tmp",
+    "/tmp/.",
+    "/dev/shm/.",
+    "/var/tmp/.",
+    "/home/*/.cache",
+    "/home/*/.local/share/Trash",
+    "/tmp/.X11",
+    "/tmp/.ICE-unix",
+    "/var/tmp/.",
+    "/dev/shm/.",
+    "/run/user/*/gnupg",
+    "/tmp/.hidden",
+    "/dev/shm/.hidden"
+  ]
+}

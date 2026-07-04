@@ -1,0 +1,26 @@
+{
+  "processes": [
+    "nc", "ncat", "netcat",
+    "nmap", "masscan",
+    "tcpdump", "wireshark",
+    "hydra", "john", "hashcat",
+    "metasploit", "msfconsole", "msfvenom",
+    "sqlmap", "nikto", "dirb", "gobuster",
+    "aircrack-ng", "airmon-ng",
+    "ettercap", "arpspoof",
+    "tcpdump",
+    "tshark",
+    "socat",
+    "cryptominer", "xmrig", "minerd",
+    "kworkerds",
+    "kthrotlds",
+    "kpsmoused",
+    "kintegrityd",
+    "kstriped",
+    "khugepaged",
+    "sshpass",
+    "chrootkit",
+    "rkhunter",
+    "lynis"
+  ]
+}
