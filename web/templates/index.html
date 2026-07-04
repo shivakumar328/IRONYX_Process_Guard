@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRONYX Process Guard — Dashboard</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- ═══ Sidebar ═══ -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4z"/>
+            <path d="M9 12l2 2 4-4" stroke-width="2.5"/>
+          </svg>
+          <span class="logo-text">IRONYX</span>
+        </div>
+        <span class="logo-subtitle">Process Guard</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-page="processes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <span>Processes</span>
+        </button>
+        <button class="nav-item" data-page="alerts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Alerts</span>
+          <span class="nav-badge" id="nav-alert-count" style="display:none">0</span>
+        </button>
+        <button class="nav-item" data-page="network">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          <span>Network</span>
+        </button>
+        <button class="nav-item" data-page="keyboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h12"/></svg>
+          <span>Input Devices</span>
+        </button>
+        <button class="nav-item" data-page="reports">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="nav-icon"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Reports</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="status-indicator">
+          <span class="status-dot active"></span>
+          <span class="status-text">Monitoring Active</span>
+        </div>
+        <div class="system-info" id="sidebar-system-info">
+          <span id="sidebar-os">Loading…</span>
+          <span id="sidebar-uptime">—</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ═══ Main Content ═══ -->
+    <main class="main-content">
+      <!-- ═══ Dashboard Page ═══ -->
+      <div class="page active" id="page-dashboard">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Real-time system security overview</p>
+          </div>
+          <div class="header-actions">
+            <span class="last-refresh" id="last-refresh">—</span>
+            <button class="btn btn-outline btn-sm" onclick="refreshAll()">Refresh</button>
+          </div>
+        </header>
+
+        <!-- Stat Cards -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">CPU Usage</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="stat-icon"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/><line x1="20" y1="9" x2="22" y2="9"/><line x1="20" y1="14" x2="22" y2="14"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="2" y1="14" x2="4" y2="14"/></svg>
+            </div>
+            <div class="stat-value" id="stat-cpu">0%</div>
+            <div class="stat-bar"><div class="stat-bar-fill" id="stat-cpu-bar" style="width:0%"></div></div>
+            <div class="stat-meta" id="stat-cpu-cores">— cores</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Memory Usage</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="stat-icon"><path d="M6 19v-3M10 19v-3M14 19v-3M18 19v-3M8 11V5a2 2 0 014 0v6M16 11V5a2 2 0 014 0v6M4 11h16v8H4z"/></svg>
+            </div>
+            <div class="stat-value" id="stat-mem">0%</div>
+            <div class="stat-bar"><div class="stat-bar-fill stat-bar-mem" id="stat-mem-bar" style="width:0%"></div></div>
+            <div class="stat-meta" id="stat-mem-detail">— / —</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-label">Processes</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="stat-icon"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </div>
+            <div class="stat-value" id="stat-procs">0</div>
+            <div class="stat-meta" id="stat-proc-detail">— monitored</div>
+          </div>
+
+          <div class="stat-card stat-card-alert">
+            <div class="stat-card-header">
+              <span class="stat-label">High Risk</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="stat-icon"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="stat-value stat-value-danger" id="stat-high-risk">0</div>
+            <div class="stat-meta" id="stat-risk-detail">— medium · — low</div>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="chart-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">CPU & Memory (Live)</h3>
+              <span class="card-badge">Real-time</span>
+            </div>
+            <div class="card-body">
+              <canvas id="chart-cpu-mem" height="200"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Risk Distribution</h3>
+            </div>
+            <div class="card-body">
+              <div class="risk-donut" id="risk-donut">
+                <svg viewBox="0 0 200 200" class="donut-svg">
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="var(--color-low)" stroke-width="20" id="donut-low" stroke-dasharray="0 502.4" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="var(--color-medium)" stroke-width="20" id="donut-medium" stroke-dasharray="0 502.4" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+                  <circle cx="100" cy="100" r="80" fill="none" stroke="var(--color-high)" stroke-width="20" id="donut-high" stroke-dasharray="0 502.4" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+                  <text x="100" y="95" text-anchor="middle" class="donut-total" id="donut-total">0</text>
+                  <text x="100" y="115" text-anchor="middle" class="donut-label">Processes</text>
+                </svg>
+                <div class="donut-legend">
+                  <div class="legend-item"><span class="legend-dot legend-low"></span>Low</div>
+                  <div class="legend-item"><span class="legend-dot legend-medium"></span>Medium</div>
+                  <div class="legend-item"><span class="legend-dot legend-high"></span>High</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Risk Processes + Recent Alerts -->
+        <div class="bottom-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Top Risk Processes</h3>
+              <button class="btn btn-ghost btn-xs" onclick="switchPage('processes')">View All →</button>
+            </div>
+            <div class="card-body" id="top-risk-list">
+              <div class="empty-state">Loading…</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent Alerts</h3>
+              <button class="btn btn-ghost btn-xs" onclick="switchPage('alerts')">View All →</button>
+            </div>
+            <div class="card-body" id="recent-alerts-list">
+              <div class="empty-state">Loading…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Processes Page ═══ -->
+      <div class="page" id="page-processes">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Processes</h1>
+            <p class="page-subtitle">All running processes with risk scores</p>
+          </div>
+          <div class="header-actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="process-search" placeholder="Search by name, PID, user…" oninput="filterProcesses()">
+            </div>
+            <select id="process-risk-filter" class="select" onchange="filterProcesses()">
+              <option value="all">All Risk Levels</option>
+              <option value="high">High Risk</option>
+              <option value="medium">Medium Risk</option>
+              <option value="low">Low Risk</option>
+            </select>
+          </div>
+        </header>
+        <div class="card">
+          <div class="table-wrapper">
+            <table class="data-table" id="process-table">
+              <thead>
+                <tr>
+                  <th>PID</th>
+                  <th>Name</th>
+                  <th>User</th>
+                  <th class="num">CPU%</th>
+                  <th class="num">RAM (MB)</th>
+                  <th>Keyboard</th>
+                  <th>Root</th>
+                  <th>Connections</th>
+                  <th>Risk</th>
+                </tr>
+              </thead>
+              <tbody id="process-tbody">
+                <tr><td colspan="9" class="empty-state">Loading processes…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Alerts Page ═══ -->
+      <div class="page" id="page-alerts">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Alerts</h1>
+            <p class="page-subtitle">Security alerts and suspicious activity</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-outline btn-sm" onclick="loadAlerts()">Refresh</button>
+          </div>
+        </header>
+        <div class="card">
+          <div class="table-wrapper">
+            <table class="data-table" id="alert-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>PID</th>
+                  <th>Process</th>
+                  <th class="num">Score</th>
+                  <th>Level</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="alert-tbody">
+                <tr><td colspan="7" class="empty-state">Loading alerts…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Network Page ═══ -->
+      <div class="page" id="page-network">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Network</h1>
+            <p class="page-subtitle">Active network connections per process</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-outline btn-sm" onclick="loadNetwork()">Refresh</button>
+          </div>
+        </header>
+        <div class="card">
+          <div class="table-wrapper">
+            <table class="data-table" id="network-table">
+              <thead>
+                <tr>
+                  <th>PID</th>
+                  <th>Process</th>
+                  <th>Local</th>
+                  <th>Remote</th>
+                  <th>Proto</th>
+                  <th>Status</th>
+                  <th>Flags</th>
+                </tr>
+              </thead>
+              <tbody id="network-tbody">
+                <tr><td colspan="7" class="empty-state">Loading network…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Keyboard Page ═══ -->
+      <div class="page" id="page-keyboard">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Input Device Access</h1>
+            <p class="page-subtitle">Processes with keyboard device handles open</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-outline btn-sm" onclick="loadKeyboard()">Refresh</button>
+          </div>
+        </header>
+
+        <div class="info-banner" id="keyboard-info-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="banner-icon"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>This monitor detects which processes have <strong>/dev/input/event*</strong> handles open — it does <strong>NOT</strong> capture keystrokes. This is a defensive forensic technique.</span>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Processes Accessing Keyboard Devices</h3>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table" id="keyboard-table">
+              <thead>
+                <tr>
+                  <th>PID</th>
+                  <th>Name</th>
+                  <th>User</th>
+                  <th>Executable</th>
+                  <th>Known?</th>
+                  <th>Devices</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody id="keyboard-tbody">
+                <tr><td colspan="7" class="empty-state">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Reports Page ═══ -->
+      <div class="page" id="page-reports">
+        <header class="page-header">
+          <div>
+            <h1 class="page-title">Reports</h1>
+            <p class="page-subtitle">Generate security reports</p>
+          </div>
+        </header>
+        <div class="report-grid">
+          <div class="card report-card" onclick="generateReport('json')">
+            <div class="report-icon">JSON</div>
+            <h3>JSON Report</h3>
+            <p>Structured data export with all events and alerts</p>
+          </div>
+          <div class="card report-card" onclick="generateReport('csv')">
+            <div class="report-icon">CSV</div>
+            <h3>CSV Report</h3>
+            <p>Spreadsheet-compatible tabular data export</p>
+          </div>
+          <div class="card report-card" onclick="generateReport('html')">
+            <div class="report-icon">HTML</div>
+            <h3>HTML Report</h3>
+            <p>Self-contained styled HTML report for browsers</p>
+          </div>
+          <div class="card report-card" onclick="generateReport('pdf')">
+            <div class="report-icon">PDF</div>
+            <h3>PDF Report</h3>
+            <p>Printable PDF document with tables and stats</p>
+          </div>
+        </div>
+        <div class="card" id="report-result" style="display:none">
+          <div class="card-header"><h3 class="card-title">Report Generated</h3></div>
+          <div class="card-body" id="report-result-body"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
