@@ -1,0 +1,87 @@
+# IRONYX Process Guard — Configuration File
+# ============================================
+# Edit this file to customise monitoring behaviour, risk thresholds,
+# whitelists, and notification preferences.
+
+general:
+  app_name: "IRONYX Process Guard"
+  version: "1.0.0"
+  check_interval: 5            # seconds between full process scans
+  rapid_respawn_window: 10     # seconds — N spawns within window = alert
+  rapid_respawn_threshold: 5
+
+database:
+  path: "database/monitor.db"
+
+monitoring:
+  filesystem_paths:
+    - "/tmp"
+    - "/var/tmp"
+    - "/dev/shm"
+  home_watch_dirs:
+    - ".cache"
+    - ".config"
+    - ".local"
+  input_devices: "/dev/input"
+  watch_network: true
+  watch_services: true
+  watch_startup: true
+
+risk:
+  thresholds:
+    low: 30
+    medium: 60
+    high: 100
+  scores:
+    executable_in_tmp: 40
+    keyboard_device_access: 35
+    network_beacon: 20
+    unknown_hash: 20
+    hidden_file: 15
+    unsigned_binary: 10
+    runs_as_root_unexpected: 25
+    persistence_attempt: 30
+    cron_modification: 20
+    systemd_service_creation: 20
+    zombie_process: 10
+    rapid_respawn: 25
+    high_cpu_anomaly: 15
+    memory_anomaly: 15
+    orphan_process: 10
+
+rules:
+  suspicious_processes: "rules/suspicious_processes.json"
+  suspicious_paths: "rules/suspicious_paths.json"
+  whitelist: "rules/whitelist.json"
+  yara_rules_dir: "rules/yara"
+
+notifications:
+  desktop: true
+  terminal: true
+  sound: false
+
+logging:
+  level: "INFO"
+  app_log: "logs/app.log"
+  security_log: "logs/security.log"
+  alert_log: "logs/alert.log"
+  max_bytes: 5242880
+  backup_count: 5
+
+api:
+  host: "127.0.0.1"
+  port: 5555
+  debug: false
+
+gui:
+  theme: "dark"
+  refresh_interval: 3
+  chart_history_points: 60
+
+reports:
+  output_dir: "reports"
+  formats:
+    - json
+    - csv
+    - html
+    - pdf

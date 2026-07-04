@@ -1,0 +1,28 @@
+# IRONYX Process Guard — Python Dependencies
+# ============================================
+# Install with: pip install -r requirements.txt
+
+# Core monitoring
+psutil>=5.9.0
+watchdog>=3.0.0
+
+# REST API
+flask>=3.0.0
+
+# Rich terminal output
+rich>=13.0.0
+
+# Desktop notifications
+notify-py>=0.3.0
+
+# YAML configuration
+pyyaml>=6.0
+
+# PDF report generation
+reportlab>=4.0.0
+
+# Charts (used by scheduler/reporting)
+matplotlib>=3.8.0
+
+# Testing
+pytest>=7.4.0
